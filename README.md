@@ -9,6 +9,12 @@ This sample shows how you can use an external auth provider and manage simple co
 3. Enter an application name and setup your user account. Submit the form to complete the site setup. 
 4. Either log in and enter your content or try out the SSO sign in at */auth/signin/*. The homepage uses `AuthorizeAttribute` so you should be redirected there anyway.
 
+#### Editing Content
+
+- Navigate to the admin panel at *"/admin"* and sign in
+- You can edit yoru content on the *Content > Content* node. 
+- You're probably not interested in sections like Pages in your admin GUI. Currently the way to customize this is by using a custom role and removing permissions. We will add more customization options in future releases that will allow you to remove modules like *Pages* and *Documents* completely.
+
 #### Notes
 
 - In making this sample I've found a number of missing apis that would make this simpler, so both the `ContentRepository` and `SignInService` implementation is a bit more complicated than I would like. I'll be adding the missing apis to Cofoundry soon.
