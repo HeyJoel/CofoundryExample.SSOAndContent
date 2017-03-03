@@ -1,0 +1,29 @@
+﻿@inherits Cofoundry.Web.CofoundryPage
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+        <h1>Really Simple Content Example</h1>
+
+        @RenderBody()
+    </div>
+
+    <footer margin-top="2em;">
+        @if (Cofoundry.CurrentUser.IsLoggedIn)
+        {
+            <form action="/auth/signout" method="post">
+                <input type="submit" value="Sign Out" />
+            </form>
+        }
+    </footer>
+</body>
+</html>

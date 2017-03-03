@@ -1,0 +1,15 @@
+﻿@model HomeViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Content == null)
+{
+    <p>
+        This is some default homepage content. Please <a href="/admin/">log in</a> to customize.
+    </p>
+}
+else
+{
+    @Model.Content
+}
