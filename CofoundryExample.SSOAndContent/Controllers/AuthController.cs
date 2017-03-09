@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace CofoundryExample.SSOAndContent
 {
     [RoutePrefix("auth")]
-    [Route("{action=login}")]
+    [Route("{action=signin}")]
     public class AuthController : Controller
     {
         #region constructor

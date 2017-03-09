@@ -11,31 +11,27 @@ using System.Web;
 namespace CofoundryExample.SSOAndContent
 {
     /// <summary>
-    /// Note that we haven't created a repository facade for User data access,
-    /// and some of the data access functions are not there yet so this is a little
-    /// more complicated than it needs to be, but i'll add them soon.
+    /// Here we use the repositories for data access. This are simple wrappers
+    /// around command and query execution which are a bit simpler
     /// </summary>
     public class MemberSignInService : IMemberSignInService
     {
         #region constructor
 
-        private readonly CofoundryDbContext _dbContext;
-        private readonly IQueryExecutor _queryExecutor;
-        private readonly ICommandExecutor _commandExecutor;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly IExecutionContextFactory _executionContextFactory;
         private readonly ILoginService _loginService;
 
         public MemberSignInService(
-            CofoundryDbContext dbContext,
-            IQueryExecutor queryExecutor,
-            ICommandExecutor commandExecutor,
+            IUserRepository userRepository,
+            IRoleRepository roleRepository,
             ILoginService loginService,
             IExecutionContextFactory executionContextFactory
             )
         {
-            _dbContext = dbContext;
-            _queryExecutor = queryExecutor;
-            _commandExecutor = commandExecutor;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _loginService = loginService;
             _executionContextFactory = executionContextFactory;
         }
@@ -51,13 +47,16 @@ namespace CofoundryExample.SSOAndContent
             return true;
         }
 
+        /// <summary>
+        /// Sign in a user that has already been authenticated.
+        /// </summary>
         public async Task SignMemberInAsync(SignMemberInCommand command)
         {
             // Because we're not logged in yet we need to elevate permissions here to save a new user,
             // otherwise the ambient anonymous user will be used and a permission exception will be thrown
             var systemExecutionContext = await _executionContextFactory.CreateSystemUserExecutionContextAsync();
 
-            var existingUser = GetExistingUser(command, systemExecutionContext);
+            var existingUser = await _userRepository.GetUserMicroSummaryByEmailAsync(command.Email, MemberUserArea.AreaCode, systemExecutionContext); ;
             int userId;
 
             if (existingUser == null)
@@ -65,10 +64,10 @@ namespace CofoundryExample.SSOAndContent
                 // If we haven't logged in with this user before, we'll create a Cofoundry user to match your
                 // SSO login.
 
-                int roleId = await GetMemberRoleId();
-                var addUserCommand = MapAddUserCommand(command, roleId);
+                var role = await GetMemberRole(systemExecutionContext);
+                var addUserCommand = MapAddUserCommand(command, role);
 
-                await _commandExecutor.ExecuteAsync(addUserCommand, systemExecutionContext);
+                await _userRepository.AddUserAsync(addUserCommand, systemExecutionContext);
 
                 // Note that the new user id is set in the OutputUserId which is a 
                 // convention used by the CQS framework (see https://github.com/cofoundry-cms/cofoundry/wiki/CQS)
@@ -94,28 +93,14 @@ namespace CofoundryExample.SSOAndContent
 
         #region private helpers
 
-        private UserMicroSummary GetExistingUser(SignMemberInCommand command, IExecutionContext systemExecutionContext)
-        {
-            var query = new GetUserMicroSummaryByEmailQuery(command.Email, MemberUserArea.AreaCode);
-            // Currently the async version of this query is missing (https://github.com/cofoundry-cms/cofoundry/issues/76)
-            var existingMember = _queryExecutor.Execute(query, systemExecutionContext);
-
-            return existingMember;
-        }
-
         /// <summary>
         /// Every user needs to be assigned a role. We've created a MemberRole in 
-        /// code, so we can our code definition to find out the database id which 
-        /// we need to create the new user
+        /// code, so we can use our code definition to get the role we need to create 
+        /// the new user with
         /// </summary>
-        private async Task<int> GetMemberRoleId()
+        private Task<RoleDetails> GetMemberRole(IExecutionContext executionContext)
         {
-            return await _dbContext
-                .Roles
-                .AsNoTracking()
-                .Where(r => r.SpecialistRoleTypeCode == MemberRole.RoleCode && r.UserAreaCode == MemberUserArea.AreaCode)
-                .Select(r => r.RoleId)
-                .SingleOrDefaultAsync();
+            return _roleRepository.GetRoleDetailsBySpecialistRoleTypeCodeAsync(MemberRole.RoleCode, executionContext);
         }
 
         /// <summary>
@@ -123,13 +108,13 @@ namespace CofoundryExample.SSOAndContent
         /// care of most of the user creation logic for us. Here we map from our 
         /// domain command to the Cofoundry one.
         /// </summary>
-        private AddUserCommand MapAddUserCommand(SignMemberInCommand command, int roleId)
+        private AddUserCommand MapAddUserCommand(SignMemberInCommand command, RoleDetails role)
         {
             var addUserCommand = new AddUserCommand();
             addUserCommand.Email = command.Email;
             addUserCommand.FirstName = "Unknown";
             addUserCommand.LastName = "Unknown";
-            addUserCommand.RoleId = roleId;
+            addUserCommand.RoleId = role.RoleId;
             addUserCommand.UserAreaCode = MemberUserArea.AreaCode;
 
             return addUserCommand;

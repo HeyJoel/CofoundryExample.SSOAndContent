@@ -37,11 +37,11 @@ namespace CofoundryExample.SSOAndContent
             // What we'll end up with is an equivalent of this code, but instead of using the custom entity id, you'll
             // be able to query using the url slug.
 
-            var query = new GetCustomEntityRenderDetailsByIdQuery();
+            var query = new GetCustomEntityRenderSummaryByIdQuery();
             query.CustomEntityId = dbResult.CustomEntityId;
             query.WorkFlowStatus = WorkFlowStatusQuery.Published;
 
-            var contentItemDetails = await _customEntityRepository.GetCustomEntityRenderDetailsByIdAsync(query);
+            var contentItemDetails = await _customEntityRepository.GetCustomEntityRenderSummaryByIdAsync(query);
             var model = (ContentDataModel)contentItemDetails.Model;
 
             return new HtmlString(model.Html);
