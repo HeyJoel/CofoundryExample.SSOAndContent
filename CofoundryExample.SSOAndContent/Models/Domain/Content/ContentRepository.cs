@@ -1,5 +1,7 @@
 ﻿using Cofoundry.Domain;
 using Cofoundry.Domain.Data;
+using Microsoft.AspNetCore.Html;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Web;
 
 namespace CofoundryExample.SSOAndContent
 {
-    public class ContentRepository : IContentRepository
+    public class ContentRepository
     {
         private readonly ICustomEntityRepository _customEntityRepository;
         private readonly CofoundryDbContext _dbContext;
@@ -22,7 +24,7 @@ namespace CofoundryExample.SSOAndContent
             _dbContext = dbContext;
         }
 
-        public async Task<HtmlString> GetContentByKeyAsync(string contentKey)
+        public async Task<IHtmlContent> GetContentByKeyAsync(string contentKey)
         {
             // Cofoundry is missing a query to get a custom entity by the url slug, so for now let's do the lookup manually
             // and i'll get that built in soon
@@ -39,7 +41,7 @@ namespace CofoundryExample.SSOAndContent
 
             var query = new GetCustomEntityRenderSummaryByIdQuery();
             query.CustomEntityId = dbResult.CustomEntityId;
-            query.WorkFlowStatus = WorkFlowStatusQuery.Published;
+            query.PublishStatus = PublishStatusQuery.Published;
 
             var contentItemDetails = await _customEntityRepository.GetCustomEntityRenderSummaryByIdAsync(query);
             var model = (ContentDataModel)contentItemDetails.Model;

@@ -14,7 +14,7 @@ namespace CofoundryExample.SSOAndContent
         /// <summary>
         /// Static access to the area code for querying
         /// </summary>
-        public static string AreaCode = "MEM";
+        public const string AreaCode = "MEM";
 
         /// <summary>
         /// A unique 3 letter code identifying this user area. The cofoundry 
@@ -34,5 +34,17 @@ namespace CofoundryExample.SSOAndContent
         /// otherwise this can be false.
         /// </summary>
         public bool UseEmailAsUsername { get { return true; } }
+
+        /// <summary>
+        /// The path to redirect the user to when not lgoged in.
+        /// </summary>
+        public string LoginPath => "/auth/signin";
+
+        /// <summary>
+        /// Cofoundry creates an auth schema for each user area. Use this property to set
+        /// this user area as the default auth schema, which means the HttpContext.User property
+        /// will be set to this identity.
+        /// </summary>
+        public bool IsDefaultAuthSchema => true;
     }
 }

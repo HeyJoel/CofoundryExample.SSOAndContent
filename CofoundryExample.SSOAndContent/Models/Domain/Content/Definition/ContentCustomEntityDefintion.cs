@@ -6,7 +6,7 @@ using System.Web;
 
 namespace CofoundryExample.SSOAndContent
 {
-    public class ContentCustomEntityDefintion : ICustomisedTermCustomEntityDefinition<ContentDataModel>
+    public class ContentCustomEntityDefintion : ICustomizedTermCustomEntityDefinition<ContentDataModel>
     {
         /// <summary>
         /// This constant is a convention that allows us to reference this definition code 

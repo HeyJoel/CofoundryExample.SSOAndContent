@@ -1,6 +1,7 @@
-﻿@inherits Cofoundry.Web.CofoundryPage
+﻿@inject ICofoundryHelper Cofoundry
 @{
     Layout = null;
+    var currentUser = await Cofoundry.CurrentUser.GetAsync();
 }
 
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
     </div>
 
     <footer margin-top="2em;">
-        @if (Cofoundry.CurrentUser.IsLoggedIn)
+        @if (currentUser.IsLoggedIn)
         {
             <form action="/auth/signout" method="post">
                 <input type="submit" value="Sign Out" />

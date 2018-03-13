@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Html;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,6 @@ namespace CofoundryExample.SSOAndContent
 {
     public class SignInViewModel
     {
-        public IHtmlString Content { get; set; }
+        public IHtmlContent Content { get; set; }
     }
 }

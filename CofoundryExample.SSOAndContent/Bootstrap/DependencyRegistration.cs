@@ -19,8 +19,8 @@ namespace CofoundryExample.SSOAndContent
     {
         public void Register(IContainerRegister container)
         {
-            container.RegisterType<IContentRepository, ContentRepository>();
-            container.RegisterType<IMemberSignInService, MemberSignInService>();
+            container.Register<ContentRepository>();
+            container.Register<MemberSignInService>();
         }
     }
 }

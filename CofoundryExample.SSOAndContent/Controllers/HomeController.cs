@@ -1,26 +1,25 @@
-﻿using Cofoundry.Domain;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+using Cofoundry.Web.Admin;
 
 namespace CofoundryExample.SSOAndContent
 {
     public class HomeController : Controller
     {
-        private readonly IContentRepository _contentRepository;
+        private readonly ContentRepository _contentRepository;
 
         public HomeController(
-            IContentRepository contentRepository
+            ContentRepository contentRepository
             )
         {
             _contentRepository = contentRepository;
         }
 
-        [Route]
-        [Authorize]
+        [Route("")]
+        [AuthorizeUserArea(MemberUserArea.AreaCode)]
         public async Task<ActionResult> Index()
         {
             var vm = new HomeViewModel();

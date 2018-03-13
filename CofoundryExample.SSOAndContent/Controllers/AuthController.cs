@@ -1,24 +1,22 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 
 namespace CofoundryExample.SSOAndContent
 {
-    [RoutePrefix("auth")]
-    [Route("{action=signin}")]
+    [Route("auth/[action]")]
     public class AuthController : Controller
     {
         #region constructor
 
-        private readonly IMemberSignInService _memberLoginService;
-        private readonly IContentRepository _contentRepository;
+        private readonly MemberSignInService _memberLoginService;
+        private readonly ContentRepository _contentRepository;
 
         public AuthController(
-            IMemberSignInService memberLoginService,
-            IContentRepository contentRepository
+            MemberSignInService memberLoginService,
+            ContentRepository contentRepository
             )
         {
             _memberLoginService = memberLoginService;
@@ -29,6 +27,7 @@ namespace CofoundryExample.SSOAndContent
 
         #region actions
 
+        [HttpGet]
         public async Task<ActionResult> SignIn()
         {
             var vm = await GetSignInViewModel();
@@ -50,9 +49,9 @@ namespace CofoundryExample.SSOAndContent
         }
 
         [HttpPost]
-        public ActionResult SignOut()
+        public async Task<IActionResult> SignOut()
         {
-            _memberLoginService.SignOut();
+            await _memberLoginService.SignOutAsync();
             return RedirectToAction(nameof(SignIn));
         }
 

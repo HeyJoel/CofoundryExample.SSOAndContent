@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CofoundryExample.SSOAndContent", "CofoundryExample.SSOAndContent\CofoundryExample.SSOAndContent.csproj", "{84AAD53C-8DAF-4ED0-A4C4-D6EDC1587BF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CofoundryExample.SSOAndContent", "CofoundryExample.SSOAndContent\CofoundryExample.SSOAndContent.csproj", "{55E0CF16-5ADE-40C1-A987-E4C3725FCC92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{84AAD53C-8DAF-4ED0-A4C4-D6EDC1587BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84AAD53C-8DAF-4ED0-A4C4-D6EDC1587BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84AAD53C-8DAF-4ED0-A4C4-D6EDC1587BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84AAD53C-8DAF-4ED0-A4C4-D6EDC1587BF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55E0CF16-5ADE-40C1-A987-E4C3725FCC92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55E0CF16-5ADE-40C1-A987-E4C3725FCC92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55E0CF16-5ADE-40C1-A987-E4C3725FCC92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55E0CF16-5ADE-40C1-A987-E4C3725FCC92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD310D7D-434F-4DD5-847A-D266A032FFF3}
 	EndGlobalSection
 EndGlobal

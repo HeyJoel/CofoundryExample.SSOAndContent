@@ -1,12 +1,9 @@
 ﻿using Cofoundry.Domain;
 using Cofoundry.Domain.CQS;
-using Cofoundry.Domain.Data;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace CofoundryExample.SSOAndContent
 {
@@ -14,7 +11,7 @@ namespace CofoundryExample.SSOAndContent
     /// Here we use the repositories for data access. This are simple wrappers
     /// around command and query execution which are a bit simpler
     /// </summary>
-    public class MemberSignInService : IMemberSignInService
+    public class MemberSignInService
     {
         #region constructor
 
@@ -42,7 +39,7 @@ namespace CofoundryExample.SSOAndContent
 
         public bool IsAuthenticated(SignMemberInCommand command)
         {
-            // TODO: Add in your own auth here
+            // TODO: Add in your own auth integration here
 
             return true;
         }
@@ -56,7 +53,7 @@ namespace CofoundryExample.SSOAndContent
             // otherwise the ambient anonymous user will be used and a permission exception will be thrown
             var systemExecutionContext = await _executionContextFactory.CreateSystemUserExecutionContextAsync();
 
-            var existingUser = await _userRepository.GetUserMicroSummaryByEmailAsync(command.Email, MemberUserArea.AreaCode, systemExecutionContext); ;
+            var existingUser = await _userRepository.GetUserMicroSummaryByEmailAsync(command.Email, MemberUserArea.AreaCode, systemExecutionContext);
             int userId;
 
             if (existingUser == null)
@@ -79,14 +76,14 @@ namespace CofoundryExample.SSOAndContent
                 userId = existingUser.UserId;
             }
 
-            await _loginService.LogAuthenticatedUserInAsync(userId, true);
+            await _loginService.LogAuthenticatedUserInAsync(MemberUserArea.AreaCode, userId, true);
         }
 
-        public void SignOut()
+        public Task SignOutAsync()
         {
             // TODO: Add in your own sign out logic here
 
-            _loginService.SignOut();
+            return _loginService.SignOutAsync(MemberUserArea.AreaCode);
         }
 
         #endregion
@@ -100,7 +97,7 @@ namespace CofoundryExample.SSOAndContent
         /// </summary>
         private Task<RoleDetails> GetMemberRole(IExecutionContext executionContext)
         {
-            return _roleRepository.GetRoleDetailsBySpecialistRoleTypeCodeAsync(MemberRole.RoleCode, executionContext);
+            return _roleRepository.GetRoleDetailsByRoleCodeAsync(MemberRole.MemberRoleCode, executionContext);
         }
 
         /// <summary>

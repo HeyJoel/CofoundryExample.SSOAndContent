@@ -1,7 +1,5 @@
 ﻿@model HomeViewModel
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+@inject ICofoundryHelper Cofoundry
 
 @if (Model.Content == null)
 {
@@ -11,5 +9,5 @@
 }
 else
 {
-    @Model.Content
+    @Cofoundry.Sanitizer.Sanitize(Model.Content)
 }

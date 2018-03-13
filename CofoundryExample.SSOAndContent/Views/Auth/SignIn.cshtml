@@ -1,7 +1,5 @@
 ﻿@model CofoundryExample.SSOAndContent.SignInViewModel
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+@inject ICofoundryHelper Cofoundry
 
 <h2>Sign In</h2>
 
@@ -13,7 +11,7 @@
 }
 else
 {
-    @Model.Content
+    @Cofoundry.Sanitizer.Sanitize(Model.Content)
 }
 
 <form method="post">

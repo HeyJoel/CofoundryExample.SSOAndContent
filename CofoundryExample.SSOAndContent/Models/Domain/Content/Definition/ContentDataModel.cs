@@ -7,7 +7,7 @@ using System.Web;
 
 namespace CofoundryExample.SSOAndContent
 {
-    public class ContentDataModel : ICustomEntityVersionDataModel
+    public class ContentDataModel : ICustomEntityDataModel
     {
         [Required]
         [Html(HtmlToolbarPreset.BasicFormatting, HtmlToolbarPreset.Headings, HtmlToolbarPreset.Source, HtmlToolbarPreset.Media)]
