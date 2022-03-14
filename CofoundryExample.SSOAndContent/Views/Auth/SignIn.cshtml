@@ -1,4 +1,4 @@
-﻿@model CofoundryExample.SSOAndContent.SignInViewModel
+﻿@model SignInViewModel
 @inject ICofoundryHelper Cofoundry
 
 <h2>Sign In</h2>
@@ -16,9 +16,8 @@ else
 
 <form method="post">
     <div>
-        <input name="Email"
-               placeholder="Email" 
-               type="email" 
+        <input name="Username"
+               placeholder="Username" 
                required />
     </div>
     <div>
